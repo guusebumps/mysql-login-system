@@ -13,4 +13,9 @@ Para conseguir rodar o programa, é necessário ter o MySQL rodando no seu compu
 
 # Screenshots
 
-Em breve!
+![image](https://user-images.githubusercontent.com/113928099/229818724-467b7958-7b67-445d-bb9e-8cc3f85ee84d.png)
+![image](https://user-images.githubusercontent.com/113928099/229819055-efb6ae38-5480-487b-8104-20b80407b48d.png)
+![image](https://user-images.githubusercontent.com/113928099/229819107-a8ba7d9d-b8a4-4376-b10a-29ab87d39b00.png)
+![image](https://user-images.githubusercontent.com/113928099/229819480-24a71094-10e1-48d9-83cd-a5c0075b8ba8.png)
+![image](https://user-images.githubusercontent.com/113928099/229819726-78042e10-4100-40be-bbce-a35a5bea254b.png)
+![image](https://user-images.githubusercontent.com/113928099/229819825-4f332f77-9c07-4ec5-afe8-180b8937d0d2.png)
