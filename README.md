@@ -1,6 +1,6 @@
 # Sistema de Login
 
-  Fiz esse software a fins de estudo, o mesmo é um sistema de login com interface gráfica e integrado com um banco de dados MySQL, onde é possível se cadastrar e fazer login a partir da conta criada.
+  Fiz esse software a fins de estudo, o mesmo é um sistema de login com interface gráfica e integrado com um banco de dados MySQL, onde é possível se cadastrar e fazer login a partir da conta criada. A sua senha deve possuir mais de 8 caracteres e tbm devem coincidir.
 
 # Bibliotecas Utilizadas: 
 
