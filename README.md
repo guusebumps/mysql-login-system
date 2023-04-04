@@ -9,7 +9,7 @@
 
 # Utilização do programa
 
-Para conseguir rodar o programa, é necessário ter o MySQL rodando no seu computador. Eu utilizo o xampp, basta baixar, instalar e rodar. Segue o link para download do Xampp: https://www.apachefriends.org/download.html
+Para conseguir rodar o programa, é necessário ter o MySQL rodando no seu computador, após isso criar uma database com o nome de "login". Eu utilizo o xampp para rodar o MySQL, pois basta baixar, instalar e rodar. Segue o link para download do Xampp: https://www.apachefriends.org/download.html
 
 # Screenshots
 
