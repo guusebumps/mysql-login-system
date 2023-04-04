@@ -80,6 +80,7 @@ def cadastrar():
             print("As senhas não coincidem!")
     else:
         tela_cadastro.label_6.setText("Sua senha deve possuir mais de 8 dígitos!")
+        tela_cadastro.label_7.setText("")
         print("Sua senha deve possuir mais de 8 dígitos!")
 
 def volta_tela_cadastro():
