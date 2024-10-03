@@ -1,76 +1,72 @@
 
-# MySQL Login System
+# MySQL Login System (PyQt5)
 
-This project implements a simple and secure login system using MySQL as the database backend and Python as the programming language. The system ensures user authentication through secure password storage, providing a robust base for web applications or any other platform requiring user login functionality.
+This project is a simple and secure login system built using PyQt5 for the graphical interface and MySQL for the database backend. The system supports user registration and authentication with secure password storage and validation.
 
 ## Features
 
-- **User Registration**: Create new accounts with secure password hashing.
-- **User Login**: Authenticate users against the MySQL database.
-- **Password Encryption**: Ensures passwords are stored securely using hashing algorithms.
-- **Error Handling**: User-friendly error messages for incorrect login attempts or registration errors.
-- **Database Management**: Includes SQL script for creating the necessary database and tables.
+- **User Registration**: Allows users to create new accounts.
+- **User Login**: Validates user credentials to log in.
+- **Password Security**: Ensures passwords are securely stored in the database.
+- **Error Handling**: Provides feedback for incorrect login or registration issues.
+- **Database Integration**: Uses MySQL for storing user data.
 
 ## Requirements
 
-To run this project, ensure you have the following installed:
+To run this project, you'll need the following:
 
-- Python 3.x
-- MySQL server
-- Python libraries:
+- **Python 3.x**
+- **PyQt5**: For creating the graphical user interface.
+- **MySQL Server**: To manage the user data.
+- **Python Libraries**:
   - `mysql-connector-python`
-  - `bcrypt`
+  - `PyQt5`
+  - `colorama`
 
-You can install the required libraries using pip:
+Install the necessary Python libraries using:
 
 ```bash
-pip install mysql-connector-python bcrypt
+pip install mysql-connector-python PyQt5 colorama
 ```
 
-## Getting Started
+## Files
 
-### Database Setup
+- **initial_screen.ui**: The UI file for the initial screen.
+- **login_screen.ui**: The UI file for the login screen.
+- **register_screen.ui**: The UI file for the registration screen.
+- **main_screen.ui**: The UI file for the main screen after login.
 
-1. Install and configure a MySQL server.
-2. Create a database named `login_system` and a table for storing users:
-   
+## Database Setup
+
+Before running the application, you need to set up the MySQL database:
+
+1. Install and configure MySQL on your machine.
+2. Create a database named `login`:
+
    ```sql
-   CREATE DATABASE login_system;
-   
-   USE login_system;
-   
-   CREATE TABLE users (
-       id INT AUTO_INCREMENT PRIMARY KEY,
-       username VARCHAR(50) NOT NULL UNIQUE,
-       password VARCHAR(255) NOT NULL
-   );
+   CREATE DATABASE login;
    ```
 
-3. Ensure your MySQL server is running and you have the correct credentials.
+3. Create the `login` table:
 
-### Configuration
+   ```sql
+   USE login;
 
-1. Clone this repository to your local machine:
-
-   ```bash
-   git clone https://github.com/guusebumps/sistema-de-login-mysql.git
-   cd sistema-de-login-mysql
+   CREATE TABLE IF NOT EXISTS login (
+       id INT NOT NULL AUTO_INCREMENT,
+       email VARCHAR(110) NOT NULL,
+       username VARCHAR(45) NOT NULL,
+       password VARCHAR(45) NOT NULL,
+       birth_date DATE NULL,
+       PRIMARY KEY (id)
+   ) DEFAULT CHARACTER SET = utf8mb4;
    ```
 
-2. Open `config.py` and update the MySQL connection details:
+4. Update your MySQL credentials in the code if necessary.
 
-   ```python
-   db_config = {
-       'host': 'localhost',
-       'user': 'your_mysql_username',
-       'password': 'your_mysql_password',
-       'database': 'login_system'
-   }
-   ```
+## Running the Application
 
-### Running the Application
-
-Once your database is set up and your configuration is complete, you can run the Python script:
+Once the database is set up and the UI files are in place, you can run the application by executing the Python script:
 
 ```bash
 python main.py
@@ -78,13 +74,19 @@ python main.py
 
 ### Functionalities
 
-- **Register**: Enter a username and password to create a new account.
-- **Login**: Authenticate with an existing username and password.
+- **Initial Screen**: Choose between logging in or registering.
+- **Login**: Input your username and password to authenticate.
+- **Register**: Create a new user account with a username, email, and password.
+- **Main Screen**: After logging in, the main screen will display the username of the logged-in user.
+
+### Screen Navigation
+
+- The user can navigate between the initial, login, and registration screens easily.
+- Error messages are displayed for invalid input or mismatched passwords.
 
 ## Future Improvements
 
-- **Session Management**: Add session handling to maintain user login state across different pages.
-- **Email Verification**: Implement email confirmation during the registration process.
-- **Password Recovery**: Provide users with the option to reset their password via email.
-
-
+- **Session Management**: Add functionality for maintaining user sessions.
+- **Password Encryption**: Enhance password storage security with hashing.
+- **Password Recovery**: Allow users to recover or reset their passwords.
+- **User Profile**: Add the ability for users to update their information.
