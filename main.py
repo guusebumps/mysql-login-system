@@ -1,123 +1,121 @@
-from PyQt5 import  uic,QtWidgets
+from PyQt5 import uic, QtWidgets
 from colorama import Cursor
 import mysql.connector
 
-# Constantes
-caracteres_min_senha = 8
+MIN_PASSWORD_LENGTH = 8
 
-# Tela inicial
-def chama_tela_login():
-    tela_inicial.close()
-    tela_login.show()
-    tela_login.label_2.setText("")
+def show_login_screen():
+    initial_screen.close()
+    login_screen.show()
+    login_screen.label_2.setText("")
 
-def chama_tela_cadastro():
-    tela_inicial.close()
-    tela_cadastro.show()
-    tela_cadastro.label_6.setText("")
-    tela_cadastro.label_7.setText("")
+def show_register_screen():
+    initial_screen.close()
+    register_screen.show()
+    register_screen.label_6.setText("")
+    register_screen.label_7.setText("")
 
-# Tela de login
 def login():
-    nome_usuario = tela_login.lineEdit_login.text()
-    senha = tela_login.lineEdit_senha.text()
+    username = login_screen.lineEdit_login.text()
+    password = login_screen.lineEdit_password.text()
 
     try:
-        banco_login = mysql.connector.connect(host="localhost", user="root", passwd="", database="login")
-        cursor = banco_login.cursor()
-        cursor.execute("SELECT password FROM login WHERE username = '{}'".format(nome_usuario))
-        # cursor.execute("SELECT AES_DECRYPT(password,'senhadachave') AS password FROM login WHERE username = '{}'".format(nome_usuario))
-        # # cursor.execute("SELECT CAST(AES_DECRYPT(password,'senhadachave') as char) FROM login WHERE username = '{}'".format(nome_usuario))
-        senha_bd = cursor.fetchone()[0]
-        banco_login.close()
+        db_connection = mysql.connector.connect(host="localhost", user="root", passwd="", database="login")
+        cursor = db_connection.cursor()
+        cursor.execute("SELECT password FROM login WHERE username = %s", (username,))
+        stored_password = cursor.fetchone()[0]
+        db_connection.close()
 
-        if senha == senha_bd:
-            tela_login.lineEdit_login.setText("")
-            tela_login.lineEdit_senha.setText("")
-            tela_login.close()
-            tela_principal.show()
-            tela_principal.label_User.setText(nome_usuario)
+        if password == stored_password:
+            login_screen.lineEdit_login.setText("")
+            login_screen.lineEdit_password.setText("")
+            login_screen.close()
+            main_screen.show()
+            main_screen.label_User.setText(username)
         else:
-            tela_login.label_2.setText("Dados de login incorretos!")
-            print("Dados de login incorretos!")
+            login_screen.label_2.setText("Incorrect login details!")
+            print("Incorrect login details!")
 
     except Exception as e:
-        print("Erro ao fazer login: ", e)
-        tela_login.label_2.setText("Erro ao fazer login")
+        print("Error during login: ", e)
+        login_screen.label_2.setText("Error during login")
 
-def volta_tela_login():
-    tela_login.close()
-    tela_inicial.show()
+def back_to_login_screen():
+    login_screen.close()
+    initial_screen.show()
 
-# Tela de cadastro
-def cadastrar():
-    email_cadastrado = tela_cadastro.lineEdit_email.text()
-    usuario_cadastrado = tela_cadastro.lineEdit_username.text()
-    senha_cadastrada = tela_cadastro.lineEdit_password.text()
-    confirma_senha = tela_cadastro.lineEdit_password2.text()    
+def register():
+    email = register_screen.lineEdit_email.text()
+    username = register_screen.lineEdit_username.text()
+    password = register_screen.lineEdit_password.text()
+    confirm_password = register_screen.lineEdit_password2.text()
 
-    if len(senha_cadastrada) >= caracteres_min_senha:
-
-        if senha_cadastrada == confirma_senha:
-
-            banco_cadastro = mysql.connector.connect(host="localhost", user="root", passwd="", database="login")
-            cursor = banco_cadastro.cursor()
-            comando_SQL_cadastro = ("INSERT INTO login (`e-mail`,username,password) VALUES (%s,%s,%s)")
-            # comando_SQL_cadastro = ("INSERT INTO login (`e-mail`,username,password) VALUES (%s,%s,AES_ENCRYPT(%s, 'senhadachave'))")
-            dados_cadastro = (str(email_cadastrado),str(usuario_cadastrado),str(senha_cadastrada))
-            cursor.execute(comando_SQL_cadastro,dados_cadastro)
-            banco_cadastro.commit()
-            banco_cadastro.close()
-            tela_cadastro.lineEdit_email.setText("")
-            tela_cadastro.lineEdit_username.setText("")
-            tela_cadastro.lineEdit_password.setText("")
-            tela_cadastro.lineEdit_password2.setText("")
-            tela_cadastro.label_6.setText("")
-            tela_cadastro.label_7.setText("Cadastrado com sucesso!")
-            print("Cadastrado com sucesso!")
+    if len(password) >= MIN_PASSWORD_LENGTH:
+        if password == confirm_password:
+            db_connection = mysql.connector.connect(host="localhost", user="root", passwd="", database="login")
+            cursor = db_connection.cursor()
+            insert_query = ("INSERT INTO login (email, username, password) VALUES (%s, %s, %s)")
+            data = (email, username, password)
+            cursor.execute(insert_query, data)
+            db_connection.commit()
+            db_connection.close()
+            register_screen.lineEdit_email.setText("")
+            register_screen.lineEdit_username.setText("")
+            register_screen.lineEdit_password.setText("")
+            register_screen.lineEdit_password2.setText("")
+            register_screen.label_6.setText("")
+            register_screen.label_7.setText("Successfully registered!")
+            print("Successfully registered!")
         else:
-            tela_cadastro.label_6.setText("As senhas não coincidem!")
-            print("As senhas não coincidem!")
+            register_screen.label_6.setText("Passwords do not match!")
+            print("Passwords do not match!")
     else:
-        tela_cadastro.label_6.setText("Sua senha deve possuir mais de 8 dígitos!")
-        tela_cadastro.label_7.setText("")
-        print("Sua senha deve possuir mais de 8 dígitos!")
+        register_screen.label_6.setText("Password must be at least 8 characters long!")
+        register_screen.label_7.setText("")
+        print("Password must be at least 8 characters long!")
 
-def volta_tela_cadastro():
-    tela_cadastro.close()
-    tela_inicial.show()
+def back_to_register_screen():
+    register_screen.close()
+    initial_screen.show()
 
-# Tela principal
-def volta_tela_principal():
-    tela_principal.close()
-    tela_inicial.show()
+def back_to_main_screen():
+    main_screen.close()
+    initial_screen.show()
 
-app=QtWidgets.QApplication([])
-tela_inicial=uic.loadUi(r"tela_inicial.ui")
-tela_login=uic.loadUi(r"tela_login.ui")
-tela_cadastro=uic.loadUi(r"tela_cadastro.ui")
-tela_principal=uic.loadUi(r"tela_final.ui")
+app = QtWidgets.QApplication([])
+initial_screen = uic.loadUi(r"initial_screen.ui")
+login_screen = uic.loadUi(r"login_screen.ui")
+register_screen = uic.loadUi(r"register_screen.ui")
+main_screen = uic.loadUi(r"main_screen.ui")
 
-tela_inicial.pushButton.clicked.connect(chama_tela_login)
-tela_inicial.pushButton_2.clicked.connect(chama_tela_cadastro)
+initial_screen.pushButton.clicked.connect(show_login_screen)
+initial_screen.pushButton_2.clicked.connect(show_register_screen)
 
-tela_login.lineEdit_senha.setEchoMode(QtWidgets.QLineEdit.Password)
-tela_login.pushButton.clicked.connect(login)
-tela_login.pushButton_voltar.clicked.connect(volta_tela_login)
+login_screen.lineEdit_password.setEchoMode(QtWidgets.QLineEdit.Password)
+login_screen.pushButton.clicked.connect(login)
+login_screen.pushButton_back.clicked.connect(back_to_login_screen)
 
-tela_cadastro.lineEdit_password.setEchoMode(QtWidgets.QLineEdit.Password)
-tela_cadastro.lineEdit_password2.setEchoMode(QtWidgets.QLineEdit.Password)
-tela_cadastro.pushButton.clicked.connect(cadastrar)
-tela_cadastro.pushButton_2.clicked.connect(volta_tela_cadastro)
+register_screen.lineEdit_password.setEchoMode(QtWidgets.QLineEdit.Password)
+register_screen.lineEdit_password2.setEchoMode(QtWidgets.QLineEdit.Password)
+register_screen.pushButton.clicked.connect(register)
+register_screen.pushButton_back.clicked.connect(back_to_register_screen)
 
-tela_principal.pushButton.clicked.connect(volta_tela_principal)
+main_screen.pushButton.clicked.connect(back_to_main_screen)
 
-# Abre o Banco de Dados e Cria Tabela
-banco_create_table = mysql.connector.connect(host="localhost", user="root", passwd="", database="login")
-cursor = banco_create_table.cursor()
-cursor.execute("CREATE TABLE if not exists login (id INT NOT NULL AUTO_INCREMENT,  email VARCHAR(110) NOT NULL,  email VARCHAR(110) NOT NULL,  username VARCHAR(45) NOT NULL,  password VARCHAR(45) NOT NULL,  data_nascimento DATE NULL,  PRIMARY KEY (id))DEFAULT CHARACTER SET = utf8mb4;")
-banco_create_table.commit()
-banco_create_table.close()
+db_connection = mysql.connector.connect(host="localhost", user="root", passwd="", database="login")
+cursor = db_connection.cursor()
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS login (
+        id INT NOT NULL AUTO_INCREMENT,
+        email VARCHAR(110) NOT NULL,
+        username VARCHAR(45) NOT NULL,
+        password VARCHAR(45) NOT NULL,
+        birth_date DATE NULL,
+        PRIMARY KEY (id)
+    ) DEFAULT CHARACTER SET = utf8mb4;
+""")
+db_connection.commit()
+db_connection.close()
 
-tela_inicial.show()
+initial_screen.show()
 app.exec()
